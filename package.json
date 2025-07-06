@@ -1,0 +1,11 @@
+{
+  "name": "ap-cookies",
+  "author": {
+    "email": "fohoov@gmail.com",
+    "name": "fohoov",
+    "url": "https://github.com/FoHoOV"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.329"
+  }
+}

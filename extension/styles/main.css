@@ -1,0 +1,10 @@
+.btn {
+    background-color: greenyellow;
+    border: none;
+    border-radius: 0.3rem;
+}
+
+.btn:disabled { 
+    cursor: not-allowed;
+    background-color: gray;
+}
