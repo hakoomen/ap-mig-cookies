@@ -76,6 +76,9 @@ async function migrateTokensOnTab(tabId) {
     authData[targetCookie] = foundCookie.value;
   }
 
+  // remove logical flag added to identify authenticated users
+  delete authData["isAuthenticated"];
+
   await writePageLocalStorage(tabId, { auth_data: JSON.stringify(authData) });
 }
 
