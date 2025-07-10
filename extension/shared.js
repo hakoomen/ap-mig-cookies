@@ -5,5 +5,5 @@
 
 /**
  * @exports
- * @typedef {{action: "migrate", payload: never} & {tabId: number}} Message
+ * @typedef {{action: "migrate", payload: {isDev: boolean}} & {tabId: number}} Message
  */

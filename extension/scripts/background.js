@@ -1,13 +1,23 @@
 /** @import { Message } from "../shared" */
 
 /**
+ * @param {boolean} isDev
+ */
+function getEnvironmentConfig(isDev) {
+  return {
+    domain: isDev ? "pwa-dev.tasn.ir" : "m.asanpardakht.com",
+  };
+}
+
+/**
  * @async
+ * @param {boolean} domain
  * @returns {Promise<chrome.cookies.Cookie[]>}
  */
-async function getCookies() {
-  const COOKIE_DOMAIN = "pwa-dev.tasn.ir";
+async function getCookies(isDev) {
+  const { domain } = getEnvironmentConfig(isDev);
   return new Promise((resolve) => {
-    chrome.cookies.getAll({ domain: COOKIE_DOMAIN }, (cookies) => {
+    chrome.cookies.getAll({ domain }, (cookies) => {
       resolve(cookies);
     });
   });
@@ -49,15 +59,16 @@ async function writePageLocalStorage(tabId, items) {
 
 /**
  * @param {number} tabId
+ * @param {boolean} isDev
  */
-async function migrateTokensOnTab(tabId) {
+async function migrateTokensOnTab(tabId, isDev) {
   const targetCookies = /**@type {const} */ ([
     "access_token",
     "refresh_token",
     "embedded_token",
     "lightweight_token",
   ]);
-  const cookies = await getCookies();
+  const cookies = await getCookies(isDev);
   const authData = JSON.parse(
     (await readPageLocalStorage(tabId, "auth_data")) ?? "{}"
   );
@@ -85,7 +96,7 @@ async function migrateTokensOnTab(tabId) {
 chrome.runtime.onMessage.addListener(
   (/** @type {Message} */ msg, sender, sendResponse) => {
     if (msg.action === "migrate") {
-      migrateTokensOnTab(msg.tabId).then(sendResponse);
+      migrateTokensOnTab(msg.tabId, msg.payload.isDev).then(sendResponse);
       return true;
     }
   }

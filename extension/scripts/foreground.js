@@ -5,9 +5,11 @@
 function main() {
   document.addEventListener("DOMContentLoaded", () => {
     const migrateBtn = document.querySelector("#migrate-btn");
+    /** @type {HTMLInputElement} */
+    const isDevCb = document.querySelector("#is-dev-cb");
     migrateBtn.addEventListener("click", async (e) => {
       migrateBtn.setAttribute("disabled", true);
-      await migrate();
+      await migrate(isDevCb.checked);
       migrateBtn.removeAttribute("disabled");
     });
   });
@@ -31,11 +33,17 @@ async function sendMessage(message) {
   });
 }
 
-async function migrate() {
+/**
+ * @param {boolean} isDev
+ */
+async function migrate(isDev) {
   setStatus("migrating...");
   try {
     await sendMessage({
       action: "migrate",
+      payload: {
+        isDev,
+      },
     });
     setStatus("migrated!");
   } catch (e) {
