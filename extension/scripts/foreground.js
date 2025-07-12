@@ -1,15 +1,15 @@
 /**
- * @import { Message, Serializable } from "../shared"
+ * @import { Message, EnvMode, Serializable } from "../shared"
  */
 
 function main() {
   document.addEventListener("DOMContentLoaded", () => {
     const migrateBtn = document.querySelector("#migrate-btn");
     /** @type {HTMLInputElement} */
-    const isDevCb = document.querySelector("#is-dev-cb");
+    const envRb = document.querySelector(`input[name="env"]`);
     migrateBtn.addEventListener("click", async (e) => {
       migrateBtn.setAttribute("disabled", true);
-      await migrate(isDevCb.checked);
+      await migrate(/** @type {EnvMode} */(envRb.value));
       migrateBtn.removeAttribute("disabled");
     });
   });
@@ -34,15 +34,15 @@ async function sendMessage(message) {
 }
 
 /**
- * @param {boolean} isDev
+ * @param {EnvMode} env
  */
-async function migrate(isDev) {
+async function migrate(env) {
   setStatus("migrating...");
   try {
     await sendMessage({
       action: "migrate",
       payload: {
-        isDev,
+        env,
       },
     });
     setStatus("migrated!");

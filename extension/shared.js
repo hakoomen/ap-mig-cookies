@@ -4,6 +4,11 @@
  */
 
 /**
+ * @exporta
+ * @typedef { "local" | "dev" | "prod-com" | "prod-id" } EnvMode
+ */
+
+/**
  * @exports
- * @typedef {{action: "migrate", payload: {isDev: boolean}} & {tabId: number}} Message
+ * @typedef {{action: "migrate", payload: {env: EnvMode}} & {tabId: number}} Message
  */

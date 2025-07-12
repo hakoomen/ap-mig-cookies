@@ -4,15 +4,62 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>oopsy daisy</title>
-    <link href="./styles/main.css" rel="stylesheel" />
+    <style>
+      .btn {
+        width: 100%;
+        background-color: #e91e63;
+        border: none;
+        border-radius: 0.3rem;
+        cursor: pointer;
+        border: 1px solid black;
+        padding: 0.4rem;
+      }
+
+      .btn:disabled {
+        cursor: not-allowed;
+        background-color: gray;
+      }
+
+      .rg {
+        display: flex;
+        gap: 1rem;
+      }
+    </style>
     <script type="module" src="./scripts/foreground.js"></script>
   </head>
+
   <body>
-    <button id="migrate-btn">migrate</button>
-    <label>
-      dev
-      <input type="checkbox" id="is-dev-cb" />
-    </label>
+    <button class="btn" id="migrate-btn">migrate</button>
+    <div class="rg">
+      <label>
+        local
+        <input type="radio" name="env" value="local" id="env-local-rb" />
+      </label>
+      <label>
+        dev
+        <input type="radio" name="env" value="dev" id="env-dev-rb" />
+      </label>
+      <label>
+        prod-com
+        <input
+          type="radio"
+          name="env"
+          value="prod"
+          checked
+          id="env-prod-com-rb"
+        />
+      </label>
+      <label>
+        prod-ir
+        <input
+          type="radio"
+          name="env"
+          value="prod"
+          checked
+          id="env-prod-ir-rb"
+        />
+      </label>
+    </div>
     <p id="status"></p>
   </body>
 </html>

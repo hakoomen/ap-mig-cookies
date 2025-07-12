@@ -3,7 +3,12 @@
   "name": "ap-cookie-mig",
   "version": "1.1",
   "permissions": ["cookies", "activeTab", "scripting"],
-  "host_permissions": ["*://*.tasn.ir/*", "*://*.asanpardakht.com/*"],
+  "host_permissions": [
+    "*://*.tasn.ir/*",
+    "*://*.asanpardakht.com/*",
+    "*://*.asanpardakht.ir/*",
+    "*://localhost:3000/*"
+  ],
   "background": {
     "service_worker": "./extension/scripts/background.js"
   },

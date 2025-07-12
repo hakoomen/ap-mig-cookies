@@ -1,21 +1,25 @@
-/** @import { Message } from "../shared" */
+/** @import { Message, EnvMode } from "../shared" */
 
 /**
- * @param {boolean} isDev
+ * @param {EnvMode} env
  */
-function getEnvironmentConfig(isDev) {
-  return {
-    domain: isDev ? "pwa-dev.tasn.ir" : "m.asanpardakht.com",
-  };
+function getEnvironmentConfig(env) {
+  const domain = {
+    local: "localhost:3000",
+    dev: "pwa-dev.tasn.ir",
+    "prod-com": "m.asanpardakht.com",
+    "prod-ir": "m.asanpardakht.ir",
+  }[env];
+  return { domain };
 }
 
 /**
  * @async
- * @param {boolean} domain
+ * @param {EnvMode} env
  * @returns {Promise<chrome.cookies.Cookie[]>}
  */
-async function getCookies(isDev) {
-  const { domain } = getEnvironmentConfig(isDev);
+async function getCookies(env) {
+  const { domain } = getEnvironmentConfig(env);
   return new Promise((resolve) => {
     chrome.cookies.getAll({ domain }, (cookies) => {
       resolve(cookies);
@@ -59,16 +63,16 @@ async function writePageLocalStorage(tabId, items) {
 
 /**
  * @param {number} tabId
- * @param {boolean} isDev
+ * @param {EnvMode} env
  */
-async function migrateTokensOnTab(tabId, isDev) {
+async function migrateTokensOnTab(tabId, env) {
   const targetCookies = /**@type {const} */ ([
     "access_token",
     "refresh_token",
     "embedded_token",
     "lightweight_token",
   ]);
-  const cookies = await getCookies(isDev);
+  const cookies = await getCookies(env);
   const authData = JSON.parse(
     (await readPageLocalStorage(tabId, "auth_data")) ?? "{}"
   );
